@@ -34,7 +34,7 @@ const calculateMoveChoicePoints = (myMove: Move) => {
   return moveChoicePoints[myMove];
 };
 
-export const calculateTotalScore = (input: string) => {
+export const calculateTotalScoreOld = (input: string) => {
   const moveMap: { [key: string]: Move } = {
     A: "rock",
     B: "paper",
@@ -54,6 +54,57 @@ export const calculateTotalScore = (input: string) => {
   for (let match of matches) {
     elfMove = moveMap[match[0]];
     myMove = moveMap[match[2]];
+    total += calculateMatchOutcomePoints(elfMove, myMove);
+    total += calculateMoveChoicePoints(myMove);
+  }
+
+  return total;
+};
+
+const findMyMoveFromElfMoveAndOutcome = (elfMove: Move, outcome: Outcome) => {
+  let myMoveMap = new Map<string, Move>();
+  myMoveMap.set("rock" + "loss", "scissors");
+  myMoveMap.set("rock" + "draw", "rock");
+  myMoveMap.set("rock" + "win", "paper");
+  myMoveMap.set("paper" + "loss", "rock");
+  myMoveMap.set("paper" + "draw", "paper");
+  myMoveMap.set("paper" + "win", "scissors");
+  myMoveMap.set("scissors" + "loss", "paper");
+  myMoveMap.set("scissors" + "draw", "scissors");
+  myMoveMap.set("scissors" + "win", "rock");
+  const myMove = myMoveMap.get(elfMove + outcome);
+  if (myMove === undefined) {
+    throw new Error("Assert: Move should not be undefined");
+  } else {
+    return myMove;
+  }
+};
+
+export const calculateTotalScore = (input: string) => {
+  const moveMap: { [key: string]: Move } = {
+    A: "rock",
+    B: "paper",
+    C: "scissors",
+  };
+
+  const outcomeMap: { [key: string]: Outcome } = {
+    X: "loss",
+    Y: "draw",
+    Z: "win",
+  };
+
+  let elfMove: Move;
+  let myMove: Move;
+  let outcome: Outcome;
+
+  const matches = input.trim().split("\n");
+
+  let total = 0;
+
+  for (let match of matches) {
+    elfMove = moveMap[match[0]];
+    outcome = outcomeMap[match[2]];
+    myMove = findMyMoveFromElfMoveAndOutcome(elfMove, outcome);
     total += calculateMatchOutcomePoints(elfMove, myMove);
     total += calculateMoveChoicePoints(myMove);
   }
