@@ -1,13 +1,17 @@
-export const findHeaviest = (input: string): number => {
+export const findElfTotals = (input: string): number[] => {
   const elfBags = input.trim().split("\n\n");
-  console.log(elfBags);
   const elfTotals: number[] = [];
 
   for (let i = 0; i < elfBags.length; i++) {
     let bag = elfBags[i].split("\n").map((calories) => Number(calories));
     elfTotals.push(sum(bag));
   }
-  return Math.max(...elfTotals);
+
+  return elfTotals;
+};
+
+export const findHeaviest = (input: string): number => {
+  return Math.max(...findElfTotals(input));
 };
 
 const sum = (numbers: number[]): number => {
