@@ -1,4 +1,4 @@
-export const findElfTotals = (input: string): number[] => {
+const findElfTotals = (input: string): number[] => {
   const elfBags = input.trim().split("\n\n");
   const elfTotals: number[] = [];
 
@@ -12,6 +12,11 @@ export const findElfTotals = (input: string): number[] => {
 
 export const findHeaviest = (input: string): number => {
   return Math.max(...findElfTotals(input));
+};
+
+export const findThreeHeaviest = (input: string): number => {
+  const elfTotals = findElfTotals(input).sort((a, b) => b - a);
+  return sum(elfTotals.slice(0, 3));
 };
 
 const sum = (numbers: number[]): number => {

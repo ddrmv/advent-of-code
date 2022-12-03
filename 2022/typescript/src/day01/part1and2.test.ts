@@ -1,5 +1,5 @@
 import { readFileSync } from "fs";
-import { findHeaviest } from "./part1";
+import { findHeaviest, findThreeHeaviest } from "./part1and2";
 import path from "path";
 
 describe("findHeaviest", () => {
@@ -15,5 +15,13 @@ describe("findHeaviest", () => {
     const filePath = path.join(__dirname, "../../../input/day01");
     const fileString = readFileSync(filePath, "utf8");
     expect(findHeaviest(fileString)).toBe(75622);
+  });
+});
+
+describe("findThreeHeaviest", () => {
+  it("returns biggest", () => {
+    const filePath = path.join(__dirname, "../../../input/day01");
+    const fileString = readFileSync(filePath, "utf8");
+    expect(findThreeHeaviest(fileString)).toBe(213159);
   });
 });
