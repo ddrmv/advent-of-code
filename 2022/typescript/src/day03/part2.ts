@@ -21,7 +21,15 @@ const findSticker = (bag1: string, bag2: string, bag3: string): string => {
 
 export const findStickerPrioritySum = (input: string) => {
   const priorityMap = producePriorityHashMap();
-  const groupBags = input.trimEnd().split("\n");
-  const sticker = findSticker(groupBags[0], groupBags[1], groupBags[2]);
-  return priorityMap[sticker];
+
+  const bags = input.trimEnd().split("\n");
+
+  let prioritySum = 0;
+  let sticker: string;
+
+  for (let i = 0; i < bags.length - 2; i += 3) {
+    sticker = findSticker(bags[i], bags[i + 1], bags[i + 2]);
+    prioritySum += priorityMap[sticker];
+  }
+  return prioritySum;
 };
