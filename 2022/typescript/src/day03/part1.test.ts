@@ -12,6 +12,10 @@ describe("findPrioritySum", () => {
     expect(findPrioritySum("vJrwpWtwJgWrhcsFMMfFFhFp\n")).toBe(16);
   });
 
+  it("returns 38 for jqHRNqRjqzjGDLGLrsFMfFZSrLrFZsSL", () => {
+    expect(findPrioritySum("jqHRNqRjqzjGDLGLrsFMfFZSrLrFZsSL\n")).toBe(38);
+  });
+
   xit("returns 157 for provided example", () => {
     const input =
       "vJrwpWtwJgWrhcsFMMfFFhFp\n\
