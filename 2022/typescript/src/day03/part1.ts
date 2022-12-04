@@ -15,7 +15,6 @@ export const findWrongItem = (rucksack: string) => {
   const secondHalf = rucksack.slice(halfLength);
   for (let item of secondHalf) {
     if (firstHalfUnique.has(item)) {
-      console.log(item);
       return item;
     }
   }
@@ -24,6 +23,14 @@ export const findWrongItem = (rucksack: string) => {
 
 export const findPrioritySum = (input: string): number => {
   const priorityHashMap = producePriorityHashMap();
-  const wrongItem: string = findWrongItem(input.trim());
-  return priorityHashMap[wrongItem];
+  const rucksacks = input.trim().split("\n");
+
+  let totalPriority = 0;
+  let wrongItem: string;
+
+  for (let rucksack of rucksacks) {
+    wrongItem = findWrongItem(rucksack);
+    totalPriority += priorityHashMap[wrongItem];
+  }
+  return totalPriority;
 };
