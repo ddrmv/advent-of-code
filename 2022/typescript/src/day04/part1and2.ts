@@ -10,12 +10,16 @@ const isFullOverlap = (RangeA: Range, RangeB: Range): boolean => {
   );
 };
 
+const isInRange = (number: number, range: Range): boolean => {
+  return number >= range.min && number <= range.max;
+};
+
 const isPartialOverlap = (RangeA: Range, RangeB: Range): boolean => {
   return (
-    (RangeA.min >= RangeB.min && RangeA.min <= RangeB.max) ||
-    (RangeA.max >= RangeB.min && RangeA.max <= RangeB.max) ||
-    (RangeB.min >= RangeA.min && RangeB.min <= RangeA.max) ||
-    (RangeB.max >= RangeA.min && RangeB.max <= RangeA.max)
+    isInRange(RangeA.min, RangeB) ||
+    isInRange(RangeA.max, RangeB) ||
+    isInRange(RangeB.min, RangeA) ||
+    isInRange(RangeB.max, RangeA)
   );
 };
 
@@ -35,27 +39,25 @@ const rowToRanges = (input: string): [Range, Range] => {
 };
 
 export const countFullOverlaps = (input: string): number => {
-  let fullOverlaps = 0;
-  const elfPairStrings = input.trimEnd().split("\n");
-
-  for (let pairString of elfPairStrings) {
-    if (isFullOverlap(...rowToRanges(pairString))) {
-      fullOverlaps++;
-    }
-  }
-
-  return fullOverlaps;
+  return countOverlaps(input, isFullOverlap);
 };
 
 export const countPartialOverlaps = (input: string): number => {
-  let partialOverlaps = 0;
+  return countOverlaps(input, isPartialOverlap);
+};
+
+const countOverlaps = (
+  input: string,
+  comparatorFunction: (RangeA: Range, RangeB: Range) => boolean
+) => {
+  let overlaps = 0;
   const elfPairStrings = input.trimEnd().split("\n");
 
   for (let pairString of elfPairStrings) {
-    if (isPartialOverlap(...rowToRanges(pairString))) {
-      partialOverlaps++;
+    if (comparatorFunction(...rowToRanges(pairString))) {
+      overlaps++;
     }
   }
 
-  return partialOverlaps;
+  return overlaps;
 };
