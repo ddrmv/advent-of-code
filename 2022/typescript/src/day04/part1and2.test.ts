@@ -1,6 +1,6 @@
 import { readFileSync } from "fs";
 import path from "path";
-import { countFullOverlaps } from "./part1";
+import { countFullOverlaps, countPartialOverlaps } from "./part1and2";
 
 describe("countFullOverlaps", () => {
   it("returns 1 for a one-line input of full overlap", () => {
@@ -20,9 +20,28 @@ describe("countFullOverlaps", () => {
     expect(countFullOverlaps(input)).toBe(2);
   });
 
-  it("returns answer for puzzle", () => {
+  it("returns answer for puzzle part 1", () => {
     const filePath = path.join(__dirname, "../../../input/day04");
     const fileString = readFileSync(filePath, "utf8");
     expect(countFullOverlaps(fileString)).toBe(599);
+  });
+});
+
+describe("countPartialOverlaps", () => {
+  it("returns 4 for specs in example input", () => {
+    const input =
+      "2-4,6-8\n\
+2-3,4-5\n\
+5-7,7-9\n\
+2-8,3-7\n\
+6-6,4-6\n\
+2-6,4-8\n";
+    expect(countPartialOverlaps(input)).toBe(4);
+  });
+
+  it("returns answer for puzzle part 2", () => {
+    const filePath = path.join(__dirname, "../../../input/day04");
+    const fileString = readFileSync(filePath, "utf8");
+    expect(countPartialOverlaps(fileString)).toBe(928);
   });
 });

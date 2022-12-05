@@ -10,6 +10,15 @@ const isFullOverlap = (RangeA: Range, RangeB: Range): boolean => {
   );
 };
 
+const isPartialOverlap = (RangeA: Range, RangeB: Range): boolean => {
+  return (
+    (RangeA.min >= RangeB.min && RangeA.min <= RangeB.max) ||
+    (RangeA.max >= RangeB.min && RangeA.max <= RangeB.max) ||
+    (RangeB.min >= RangeA.min && RangeB.min <= RangeA.max) ||
+    (RangeB.max >= RangeA.min && RangeB.max <= RangeA.max)
+  );
+};
+
 const rangeStringToArray = (range: string): Range => {
   const minMax = range.split("-");
   const min = Number(minMax[0]);
@@ -36,4 +45,17 @@ export const countFullOverlaps = (input: string): number => {
   }
 
   return fullOverlaps;
+};
+
+export const countPartialOverlaps = (input: string): number => {
+  let partialOverlaps = 0;
+  const elfPairStrings = input.trimEnd().split("\n");
+
+  for (let pairString of elfPairStrings) {
+    if (isPartialOverlap(...rowToRanges(pairString))) {
+      partialOverlaps++;
+    }
+  }
+
+  return partialOverlaps;
 };
