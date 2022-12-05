@@ -38,4 +38,14 @@ describe("Ship", () => {
     ship.doManyMoves(moves);
     expect(ship.getSuppliesTops()).toEqual("VQZNJMWTR");
   });
+
+  it("returns answer to puzzle part 1", () => {
+    const filePath = path.join(__dirname, "../../../input/day05");
+    const fileString = readFileSync(filePath, "utf8");
+    const [supplies, moves] = parseInput(fileString);
+    const ship = new Ship();
+    ship.setSupplies(supplies);
+    ship.doManyMoves9001(moves);
+    expect(ship.getSuppliesTops()).toEqual("NLCDCLVMQ");
+  });
 });
