@@ -27,8 +27,12 @@ const rowToRanges = (input: string): [Range, Range] => {
 
 export const countFullOverlaps = (input: string): number => {
   let fullOverlaps = 0;
-  if (isFullOverlap(...rowToRanges(input.trimEnd()))) {
-    fullOverlaps++;
+  const elfPairStrings = input.trimEnd().split("\n");
+
+  for (let pairString of elfPairStrings) {
+    if (isFullOverlap(...rowToRanges(pairString))) {
+      fullOverlaps++;
+    }
   }
 
   return fullOverlaps;
