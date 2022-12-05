@@ -19,6 +19,12 @@ export class Ship {
     }
   };
 
+  doManyMoves = (moves: Move[]) => {
+    for (const move of moves) {
+      this.doMove(move);
+    }
+  };
+
   getSuppliesTops = () => {
     let result = "";
     for (const stack of this._supplies.stacks) {
