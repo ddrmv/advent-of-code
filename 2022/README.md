@@ -8,6 +8,7 @@ The aim is to practice TDD in TypeScript, solve the puzzles, and practice syntax
 
       --------Part 1---------   --------Part 2---------
 Day       Time    Rank  Score       Time    Rank  Score
+  5   06:34:46   41107      0   06:55:39   40285      0
   4   21:22:34   96494      0   21:42:44   94965      0
   3   20:22:48   96266      0   21:38:09   91690      0
   2       >24h  132278      0       >24h  126521      0
@@ -24,3 +25,9 @@ Day       Time    Rank  Score       Time    Rank  Score
 ## Dec-04
 
 - Some refactoring at the end to pass differentiator functions between part 1 and 2 as a parameter, together with the use of a Range interface
+
+## Dec-05
+
+- First time used a class in any of the puzzles. Went well together with a few interfaces
+- First time my check-for-solution final test didn't give the correct answer on the first run, destructuring an array fixed it for the second try
+- It very unexpected and even difficult to believe the first nine stars were right on the first attempt - test-driving is wonderful
