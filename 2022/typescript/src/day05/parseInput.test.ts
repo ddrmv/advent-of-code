@@ -1,7 +1,7 @@
 import { parseInput } from "./parseInput";
 
-describe("findStacksTops", () => {
-  it("returns the top of a single stack", () => {
+describe("parseInput", () => {
+  it("returns input as interface objects", () => {
     const input =
       "    [D]\n\
 [N] [C]\n\
