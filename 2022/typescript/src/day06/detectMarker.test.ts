@@ -11,15 +11,15 @@ describe("detectMarker", () => {
     expect(detectMarker("bvwbjplbgvbhsrlpgdmjqwftvncz")).toBe(5);
   });
 
-  it("retuns 5 for exmaple nppdvjthqldpwncqszvftbrmjlhg", () => {
+  it("retuns 6 for exmaple nppdvjthqldpwncqszvftbrmjlhg", () => {
     expect(detectMarker("nppdvjthqldpwncqszvftbrmjlhg")).toBe(6);
   });
 
-  it("retuns 5 for exmaple nznrnfrfntjfmvfwmzdfjlvtqnbhcprsg", () => {
+  it("retuns 10 for exmaple nznrnfrfntjfmvfwmzdfjlvtqnbhcprsg", () => {
     expect(detectMarker("nznrnfrfntjfmvfwmzdfjlvtqnbhcprsg")).toBe(10);
   });
 
-  it("retuns 5 for exmaple zcfzfwzzqfrljwzlrfnpqdbhtmscgvjw", () => {
+  it("retuns 11 for exmaple zcfzfwzzqfrljwzlrfnpqdbhtmscgvjw", () => {
     expect(detectMarker("zcfzfwzzqfrljwzlrfnpqdbhtmscgvjw")).toBe(11);
   });
 
@@ -27,5 +27,15 @@ describe("detectMarker", () => {
     const filePath = path.join(__dirname, "../../../input/day06");
     const fileString = readFileSync(filePath, "utf8");
     expect(detectMarker(fileString)).toBe(1235);
+  });
+
+  it("retuns 19 for exmaple mjqjpqmgbljsphdztnvjfqwrcgsmlb", () => {
+    expect(detectMarker("mjqjpqmgbljsphdztnvjfqwrcgsmlb", 14)).toBe(19);
+  });
+
+  it("returns answer for puzzle part 2", () => {
+    const filePath = path.join(__dirname, "../../../input/day06");
+    const fileString = readFileSync(filePath, "utf8");
+    expect(detectMarker(fileString, 14)).toBe(3051);
   });
 });
