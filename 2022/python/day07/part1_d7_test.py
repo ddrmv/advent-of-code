@@ -1,6 +1,6 @@
 import pytest
 import os
-from part1_d7 import part1
+from part1_d7 import part1, part2
 
 @pytest.fixture
 def example_input():
@@ -39,3 +39,7 @@ def full_input():
 def test_part1(example_input, full_input):
     assert part1(example_input) == 95437
     assert part1(full_input) == 1792222
+
+def test_part2(example_input, full_input):
+    assert part2(example_input) == 24933642
+    assert part2(full_input) == 1112963

@@ -29,6 +29,13 @@ class Node:
                     dir_size_sum += child.smaller_than_100000()
         return dir_size_sum
     
+    def get_sizes(self, sizes):
+        if self.is_dir:
+            sizes.append(self.get_size())
+            for child in self.children:
+                child.get_sizes(sizes)
+        return sizes
+    
 
 class Tree:
     def __init__(self):
@@ -69,3 +76,13 @@ def parse_input(input):
 def part1(input):
     tree = parse_input(input)
     return tree.root.smaller_than_100000()
+
+def part2(input):
+    tree = parse_input(input)
+    update_space, total_capacity = 30_000_000, 70_000_000
+    necessary_space = update_space - (total_capacity - tree.root.get_size())
+    dir_sizes = []
+    tree.root.get_sizes(dir_sizes)
+    dir_sizes.append(necessary_space)
+    dir_sizes.sort()
+    return dir_sizes[dir_sizes.index(necessary_space)+1]
