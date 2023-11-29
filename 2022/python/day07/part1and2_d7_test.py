@@ -1,6 +1,6 @@
 import pytest
 import os
-from part1_d7 import part1, part2
+from part1and2_d7 import part1, part2
 
 @pytest.fixture
 def example_input():
