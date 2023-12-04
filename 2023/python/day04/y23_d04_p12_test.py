@@ -1,5 +1,5 @@
 import os, pytest
-from y23_d04_p1 import process_input, hits_to_value, part1
+from y23_d04_p12 import process_input, hits_to_value, part1, part2
 
 @pytest.fixture
 def example_input():
@@ -19,9 +19,6 @@ def full_input():
         full_input = file.read()
         return full_input
 
-# def test_process_input(example_input):
-#     assert process_input(example_input) == "a"
-
 def test_hits_to_value():
     assert hits_to_value(0) == 0
     assert hits_to_value(1) == 1
@@ -32,3 +29,7 @@ def test_hits_to_value():
 def test_part1(example_input, full_input):
     assert part1(example_input) == 13
     assert part1(full_input) == 25004
+
+def test_part2(example_input, full_input):
+    assert part2(example_input) == 30
+    assert part2(full_input) == 14427616
