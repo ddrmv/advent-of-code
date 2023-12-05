@@ -1,5 +1,5 @@
 import os, pytest
-from y23_d05_p1 import MapRange, GardenMap, seed_to_location, part1
+from y23_d05_p1 import MapRange, GardenMap, part1, part2
 
 @pytest.fixture
 def example_input():
@@ -45,7 +45,7 @@ def full_input():
     with open(filename) as file:
         full_input = file.read()
         return full_input
-
+    
 
 @pytest.fixture
 def test_mr():
@@ -53,7 +53,9 @@ def test_mr():
 
 @pytest.fixture
 def test_gm():
-    return GardenMap("seed-to-soil", [(50, 98, 2), (52, 50, 48)])
+    gm = GardenMap("seed-to-soil", [(50, 98, 2), (52, 50, 48)])
+    gm.sort_by_source()
+    return gm
 
 
 def test_MapRange(test_mr):
@@ -62,6 +64,8 @@ def test_MapRange(test_mr):
     assert test_mr.output_for(99) == 51
 
 def test_GardenMap(test_gm):
+    assert test_gm.output_for(5) == 5
+    assert test_gm.output_for(53) == 55
     assert test_gm.output_for(99) == 51
     assert test_gm.output_for(200) == 200
 
@@ -69,3 +73,8 @@ def test_GardenMap(test_gm):
 def test_part1(example_input, full_input):
     assert part1(example_input) == 35
     assert part1(full_input) == 199602917
+
+def test_part2(example_input, full_input):
+    assert part2(example_input) == 46
+    # naive solution, slow
+    assert part2(full_input) == 2254686
