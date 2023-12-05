@@ -40,9 +40,12 @@ class GardenMap():
 def nums_str_to_nums_list(st):
     return [int(num) for num in st.split(' ')]
 
-def parse_input(input):
+def parse_seeds_part1(string):
+    return nums_str_to_nums_list(string)
+
+def parse_input(input, seed_parser):
     seeds_part = input[:input.find('\n\n')]
-    seeds = nums_str_to_nums_list(seeds_part.split(': ')[1])
+    seeds = seed_parser(seeds_part.split(': ')[1])
     map_strings = input.rstrip().split('\n\n')[1:]
     maps = []
     for map_string in map_strings:
@@ -59,6 +62,6 @@ def seed_to_location(seed: int, maps: List[GardenMap]):
     return next_step
 
 def part1(input):
-    seeds, maps = parse_input(input)
+    seeds, maps = parse_input(input, parse_seeds_part1)
     locations = [seed_to_location(seed, maps) for seed in seeds]
     return min(locations)
