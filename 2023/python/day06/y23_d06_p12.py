@@ -28,6 +28,9 @@ class Race():
 def nums_str_to_nums_list(st):
     return [int(num) for num in st.split(' ') if num.isdigit()]
 
+def nums_str_to_concat_num(st):
+    return int("".join(st.split(':')[1].replace(' ', '')))
+
 def process_input(input):
     races = []
     times_part, distances_part = input.rstrip().split('\n')
@@ -37,10 +40,19 @@ def process_input(input):
         races.append(Race(time, distance))
     return races
 
+def process_input_p2(input):
+    times_part, distances_part = input.rstrip().split('\n')
+    time = nums_str_to_concat_num(times_part)
+    distance = nums_str_to_concat_num(distances_part)
+    return Race(time, distance)
+
 
 def part1(input):
     races = List[Race]
     races = process_input(input)
-
     ways_list = [race.ways_to_win() for race in races]
     return reduce(lambda a,b: a*b, ways_list)
+
+def part2(input):
+    race = process_input_p2(input)
+    return race.ways_to_win()
