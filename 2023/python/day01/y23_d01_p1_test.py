@@ -1,22 +1,14 @@
 import pytest
-import os
+from mylib.helper import read_input
 from y23_d01_p1 import get_first_num, get_last_num, part1
 
 @pytest.fixture
 def example_input():
-    return '''1abc2
-pqr3stu8vwx
-a1b2c3d4e5f
-treb7uchet
-'''
+    return read_input('y23_01_e.txt')
 
 @pytest.fixture
 def full_input():
-    dirname = os.path.dirname(__file__)
-    filename = os.path.join(dirname, '../../input/day01')
-    with open(filename) as file:
-        full_input = file.read()
-        return full_input
+    return read_input('y23_01.txt')
   
 def test_get_first_num():
     assert get_first_num("1abc2") == "1"

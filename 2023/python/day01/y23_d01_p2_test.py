@@ -1,24 +1,14 @@
-import os, pytest
+import pytest
+from mylib.helper import read_input
 from y23_d01_p2 import find_first, find_last, part2
 
 @pytest.fixture
 def example_input():
-    return '''two1nine
-eightwothree
-abcone2threexyz
-xtwone3four
-4nineeightseven2
-zoneight234
-7pqrstsixteen
-'''
+    return read_input('y23_01_e2.txt')
 
 @pytest.fixture
 def full_input():
-    dirname = os.path.dirname(__file__)
-    filename = os.path.join(dirname, '../../input/day01')
-    with open(filename) as file:
-        full_input = file.read()
-        return full_input
+    return read_input('y23_01.txt')
   
 def test_find_first():
     assert find_first("abcone2threexyz") == "1"

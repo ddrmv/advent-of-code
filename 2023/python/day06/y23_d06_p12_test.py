@@ -1,18 +1,14 @@
-import os, pytest
+import pytest
+from mylib.helper import read_input
 from y23_d06_p12 import part1, part2
 
 @pytest.fixture
 def example_input():
-    return '''Time:      7  15   30
-Distance:  9  40  200
-'''
+    return read_input('y23_06_e.txt')
+
 @pytest.fixture
 def full_input():
-    dirname = os.path.dirname(__file__)
-    filename = os.path.join(dirname, '../../input/day06.txt')
-    with open(filename) as file:
-        full_input = file.read()
-        return full_input
+    return read_input('y23_06.txt')
 
 
 def test_part1(example_input, full_input):
