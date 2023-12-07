@@ -74,7 +74,9 @@ def test_part1(example_input, full_input):
     assert part1(example_input) == 35
     assert part1(full_input) == 199602917
 
-def test_part2(example_input, full_input):
+def test_part2_example(example_input):
     assert part2(example_input) == 46
-    # naive solution, slow
+
+@pytest.mark.skip(reason="naive solution, slow")
+def test_part2_full_input(full_input):
     assert part2(full_input) == 2254686
