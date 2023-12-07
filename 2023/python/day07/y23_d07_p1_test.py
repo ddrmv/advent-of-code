@@ -1,20 +1,14 @@
-import os, pytest
+import pytest
+from mylib.helper import read_input
 from y23_d07_p1 import Hand, part1
-
-def input(filename):
-    dirname = os.path.dirname(__file__)
-    filename = os.path.join(dirname, f'../../input/{filename}')
-    with open(filename) as file:
-        input = file.read()
-        return input
 
 @pytest.fixture
 def example_input():
-    return input('day07ex.txt')
+    return read_input('y23_07_e.txt')
     
 @pytest.fixture
 def full_input():
-    return input('day07.txt')
+    return read_input('y23_07.txt')
 
 def test_Hand():
     assert Hand("32T3K", 765) < Hand("KTJJT", 220)
