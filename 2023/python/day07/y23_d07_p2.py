@@ -51,46 +51,26 @@ class Hand():
             raise ValueError
         
         js = self.cards.count(Card('J'))
-        if js:
+        if js and js != 5:
             self.adjust_for_js(js)
 
     def adjust_for_js(self, js):
-        match js:
-            case 4:
-                self.rank = HAND_TYPE['5k']
-            case 3:
-                if self.rank == HAND_TYPE['fh']:
-                    self.rank = HAND_TYPE['5k']
-                elif self.rank == HAND_TYPE['3k']:
-                    self.rank = HAND_TYPE['4k']
-                else:
-                    raise ValueError
-            case 2:
-                if self.rank == HAND_TYPE['fh']:
-                    self.rank = HAND_TYPE['5k']
-                elif self.rank == HAND_TYPE['3k']:
-                    self.rank = HAND_TYPE['5k']
-                elif self.rank == HAND_TYPE['2p']:
-                    self.rank = HAND_TYPE['4k']
-                elif self.rank == HAND_TYPE['1p']:
-                    self.rank = HAND_TYPE['3k']
-                else:
-                    raise ValueError
-            case 1:
-                if self.rank == HAND_TYPE['4k']:
-                    self.rank += 1
-                elif self.rank == HAND_TYPE['fh'] or self.rank == HAND_TYPE['3k']:
-                    self.rank = HAND_TYPE['4k']
-                elif self.rank == HAND_TYPE['2p']:
-                    self.rank = HAND_TYPE['fh']
-                elif self.rank == HAND_TYPE['1p']:
-                    self.rank = HAND_TYPE['3k']
-                elif self.rank == HAND_TYPE['hc']:
-                    self.rank = HAND_TYPE['1p']
-                else:
-                    raise ValueError
-            case _:
-                pass
+        effect_dict = {
+            (4, HAND_TYPE['4k']): HAND_TYPE['5k'],
+            (3, HAND_TYPE['fh']): HAND_TYPE['5k'],
+            (3, HAND_TYPE['3k']): HAND_TYPE['4k'],
+            (2, HAND_TYPE['fh']): HAND_TYPE['5k'],
+            (2, HAND_TYPE['3k']): HAND_TYPE['5k'],
+            (2, HAND_TYPE['2p']): HAND_TYPE['4k'],
+            (2, HAND_TYPE['1p']): HAND_TYPE['3k'],
+            (1, HAND_TYPE['4k']): HAND_TYPE['5k'],
+            (1, HAND_TYPE['fh']): HAND_TYPE['4k'],
+            (1, HAND_TYPE['3k']): HAND_TYPE['4k'],
+            (1, HAND_TYPE['2p']): HAND_TYPE['fh'],
+            (1, HAND_TYPE['1p']): HAND_TYPE['3k'],
+            (1, HAND_TYPE['hc']): HAND_TYPE['1p']
+        }
+        self.rank = effect_dict[(js, self.rank)]
 
     def __str__(self):
         return f"{''.join(str(card) for card in self.cards)},{self.rank},{self.bet}"
