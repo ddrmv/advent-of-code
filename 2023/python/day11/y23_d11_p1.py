@@ -1,9 +1,31 @@
 from typing import List
 
+class Coordinate():
+    def __init__(self, row, col):
+        self.row = row
+        self.col = col
+
+    def __str__(self):
+        return f'r{self.row},c{self.col}'
+    
+    def __eq__(self, other):
+        return self.row == other.row and self.col == other.col
+
 class Universe():
     def __init__(self, input_array):
         self.grid: List[List[str]]
+        self.galaxies: List[Coordinate]
         self.grid = input_array
+        self.galaxies = []
+        self.routes = []
+
+    def __str__(self):
+        output = ''
+        for row in self.grid:
+            for char in row:
+                output += char
+            output += '\n'
+        return output
 
     def is_col_empty(self, col):
         for row in self.grid:
@@ -22,13 +44,23 @@ class Universe():
             for empty_col_index in reversed(empty_cols):
                 row.insert(empty_col_index, '.')
 
-    def __str__(self):
-        output = ''
-        for row in self.grid:
-            for char in row:
-                output += char
-            output += '\n'
-        return output
+    def locate_galaxies(self):
+        for row_i, row in enumerate(self.grid):
+            for col_i, col in enumerate(row):
+                if col == '#':
+                    self.galaxies.append(Coordinate(row_i, col_i))
+
+    def find_distance(self, a: Coordinate, b: Coordinate):
+        x = abs(b.col - a.col)
+        y = abs(b.row - a.row)
+        return x + y
+    
+    def calculate_routes(self):
+        routes = []
+        for index, galaxy_a in enumerate(self.galaxies):
+            for galaxy_b in self.galaxies[index + 1:len(self.galaxies)]:
+                routes.append((galaxy_a, galaxy_b))
+        return sum((self.find_distance(*route)) for route in routes)
 
 
 def process_input(input):
@@ -42,5 +74,5 @@ def process_input(input):
 def part1(input):
     u = Universe(process_input(input))
     u.expand_universe()
-    print(u)
-    return u
+    u.locate_galaxies()
+    return u.calculate_routes()

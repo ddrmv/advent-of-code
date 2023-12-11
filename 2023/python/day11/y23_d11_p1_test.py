@@ -12,3 +12,4 @@ def full_input():
 
 def test_part1(example_input, full_input):
     assert part1(example_input) == 374
+    assert part1(full_input) == 9177603
