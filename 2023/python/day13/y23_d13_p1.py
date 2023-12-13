@@ -20,7 +20,7 @@ class Pattern():
                         still_mirror = False
                         break
                 if still_mirror:
-                    return set([row])
+                    return row
         return None
 
     def find_vertical_mirrors_per_line(self, line):
@@ -50,7 +50,7 @@ class Pattern():
             if len(potential_mirrors) == 0:
                 return None
         assert len(potential_mirrors) == 1
-        return potential_mirrors
+        return potential_mirrors.pop()
 
 
 def part1(input):
@@ -59,14 +59,12 @@ def part1(input):
     for pattern_part in input.rstrip().split('\n\n'):
         pattern = Pattern(pattern_part)
 
-        horizontal_mirror_lines = pattern.find_horizontal_mirror_line()
-        if horizontal_mirror_lines:
-            for horizontal_mirror_line in horizontal_mirror_lines:
-                total += (horizontal_mirror_line + 1) * 100
+        horizontal_mirror_line = pattern.find_horizontal_mirror_line()
+        if horizontal_mirror_line != None:
+            total += (horizontal_mirror_line + 1) * 100
 
-        vertical_mirror_lines = pattern.find_vertical_mirror_line()
-        if vertical_mirror_lines:
-            for vertical_mirror_line in vertical_mirror_lines:
-                total += vertical_mirror_line + 1
-                
+        vertical_mirror_line = pattern.find_vertical_mirror_line()
+        if vertical_mirror_line != None:
+            total += vertical_mirror_line + 1
+
     return total
