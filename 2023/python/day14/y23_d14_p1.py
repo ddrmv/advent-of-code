@@ -72,9 +72,16 @@ class Grid():
                 self.swap_shapes(g_row, g_col, direction, moves)
 
     def roll_all(self, direction: Direction):
-        for row, line in enumerate(self.grid):
-            for col, char in enumerate(line):
-                self.roll_one(row, col, direction)
+        if direction == DIR['n'] or direction == DIR['w']:
+            for row, line in enumerate(self.grid):
+                for col, char in enumerate(line):
+                    self.roll_one(row, col, direction)
+        elif direction == DIR['e'] or direction == DIR['s']:
+            for row, line in reversed(list(enumerate(self.grid))):
+                for col, char in reversed(list(enumerate(line))):
+                    self.roll_one(row, col, direction)
+        else:
+            assert False, 'Direction should be one of n,w,s,e'
 
     def weight_on_beams_for_direction(self, direction: Direction):
         total = 0
@@ -85,10 +92,48 @@ class Grid():
                     if self.grid[row][col].rolls:
                         total += self.rows - row
         return total
+
+    def cycle(self, times=1):
+        for _ in range(times):
+            self.roll_all(DIR['n'])
+            self.roll_all(DIR['w'])
+            self.roll_all(DIR['s'])
+            self.roll_all(DIR['e'])
+
+    def hash_grid(self):
+        return hash(self.__str__())
     
 
 def part1(input):
     g = Grid()
     g.build_grid(input)
     g.roll_all(DIR['n'])
+    return g.weight_on_beams_for_direction(DIR['n'])
+
+def part2(input):
+    g = Grid()
+    g.build_grid(input)
+
+    BIL = 1_000_000_000
+    hashes = []
+    first_at = -1
+    repeat_at = -1
+
+    for i in range(BIL):
+        g.cycle()
+        current_hash = g.hash_grid()
+        hashes.append(current_hash)
+
+        if current_hash in hashes[:-1]:
+            repeat_at = i
+            first_at = hashes.index(current_hash)
+            break
+
+    cycle_length = repeat_at - first_at
+    to_skip_cycles = ((BIL - repeat_at) // cycle_length) * cycle_length
+    cycles_left = BIL - to_skip_cycles - repeat_at - 1
+
+    for i in range(cycles_left):
+        g.cycle()
+
     return g.weight_on_beams_for_direction(DIR['n'])
