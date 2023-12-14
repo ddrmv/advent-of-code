@@ -83,14 +83,12 @@ class Grid():
         else:
             assert False, 'Direction should be one of n,w,s,e'
 
-    def weight_on_beams_for_direction(self, direction: Direction):
+    def weight_on_north_beams(self):
         total = 0
-        assert direction == DIR['n']
-        if direction == DIR['n']:
-            for row, line in enumerate(self.grid):
-                for col, char in enumerate(line):
-                    if self.grid[row][col].rolls:
-                        total += self.rows - row
+        for row, line in enumerate(self.grid):
+            for col, char in enumerate(line):
+                if self.grid[row][col].rolls:
+                    total += self.rows - row
         return total
 
     def cycle(self, times=1):
@@ -108,7 +106,7 @@ def part1(input):
     g = Grid()
     g.build_grid(input)
     g.roll_all(DIR['n'])
-    return g.weight_on_beams_for_direction(DIR['n'])
+    return g.weight_on_north_beams()
 
 def part2(input):
     g = Grid()
@@ -136,4 +134,4 @@ def part2(input):
     for i in range(cycles_left):
         g.cycle()
 
-    return g.weight_on_beams_for_direction(DIR['n'])
+    return g.weight_on_north_beams()
