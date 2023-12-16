@@ -80,25 +80,14 @@ class Grid():
     def __str__(self):
         return '\n'.join((''.join((str(tile) for tile in line)) for line in self.tiles))
         
-    def build_grid(self, input: str):
+    def build_grid(self, input: str, beam: Beam):
         for line_index, line in enumerate(input.split('\n')):
             self.tiles.append([])
             for char in line:
                 self.tiles[line_index].append(Tile(char))
         self.rows = len(self.tiles)
         self.cols = len(self.tiles[0])
-        start_tile = self.tiles[0][0]
-        direction = DIR['r']
-        if start_tile.lean == '\\' or start_tile.split == '|':
-            direction = DIR['d']
-        elif start_tile.lean == '/':
-            direction = DIR['u']
-        beam = Beam(0,0,direction)
         self.beams.add(beam)
-        first_tile: Tile
-        first_tile = self.tiles[beam.row][beam.col]
-        first_tile.energized = True
-        first_tile.beams_directions.append(beam.d)
 
     def is_in_grid(self, row, col):
         return 0 <= row < self.rows and 0 <= col < self.cols
@@ -122,12 +111,15 @@ class Grid():
         beam: Beam
         self.tiles: list[list[Tile]]
 
+        start_off_grid_tile = True
+
         while self.beams:
             beam = self.beams.pop()
             next_row, next_col = beam.next_tile_coords()
 
+
             if not self.is_in_grid(next_row, next_col):
-                continue  # beam is discarded
+                    continue  # beam is discarded
 
             next_tile: Tile
             next_tile = self.tiles[next_row][next_col]
@@ -193,6 +185,6 @@ class Grid():
 
 def part1(input: str):
     g = Grid()
-    g.build_grid(input.rstrip())
+    g.build_grid(input.rstrip(), Beam(0,-1,DIR['r']))
     g.beam_tick()
     return g.count_energized()
