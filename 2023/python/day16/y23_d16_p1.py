@@ -80,13 +80,15 @@ class Grid():
     def __str__(self):
         return '\n'.join((''.join((str(tile) for tile in line)) for line in self.tiles))
         
-    def build_grid(self, input: str, beam: Beam):
+    def build_grid(self, input: str):
         for line_index, line in enumerate(input.split('\n')):
             self.tiles.append([])
             for char in line:
                 self.tiles[line_index].append(Tile(char))
         self.rows = len(self.tiles)
         self.cols = len(self.tiles[0])
+
+    def add_beam(self, beam: Beam):
         self.beams.add(beam)
 
     def is_in_grid(self, row, col):
@@ -185,6 +187,7 @@ class Grid():
 
 def part1(input: str):
     g = Grid()
-    g.build_grid(input.rstrip(), Beam(0,-1,DIR['r']))
+    g.build_grid(input.rstrip())
+    g.add_beam(Beam(0,-1,DIR['r']))
     g.beam_tick()
     return g.count_energized()
