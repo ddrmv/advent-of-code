@@ -14,4 +14,4 @@ def test_part1(example_input):
     assert part1(example_input) == 46
 
 def test_part1_full(full_input):
-    assert part1(full_input) == -1
+    assert part1(full_input) == 7498
