@@ -1,5 +1,5 @@
 from typing import Dict, List
-
+from itertools import chain
 
 class Direction():
     def __init__(self, row, col):
@@ -113,20 +113,19 @@ class Grid():
         beam: Beam
         self.tiles: list[list[Tile]]
 
-        start_off_grid_tile = True
-
         while self.beams:
             beam = self.beams.pop()
             next_row, next_col = beam.next_tile_coords()
 
-
             if not self.is_in_grid(next_row, next_col):
-                    continue  # beam is discarded
+                # beam is discarded
+                continue
 
             next_tile: Tile
             next_tile = self.tiles[next_row][next_col]
             if beam.d in next_tile.beams_directions:
-                continue  # beam is discarded
+                # beam is discarded
+                continue
 
             next_tile.energized = True
             next_tile.beams_directions.append(beam.d)
@@ -191,3 +190,25 @@ def part1(input: str):
     g.add_beam(Beam(0,-1,DIR['r']))
     g.beam_tick()
     return g.count_energized()
+
+def part2(input: str):
+    input = input.rstrip()
+    g = Grid()
+    g.build_grid(input)
+
+    top_range =    (Beam(-1, col, DIR['d']) for col in range(g.cols))
+    bottom_range = (Beam(g.rows, col, DIR['u']) for col in range(g.cols))
+    left_range =   (Beam(row, -1, DIR['r']) for row in range(g.rows))
+    right_range =  (Beam(row, g.cols, DIR['l']) for row in range(g.rows))
+
+    max_energized = 0
+    for beam in chain(top_range, bottom_range, left_range, right_range):
+        g = Grid()
+        g.build_grid(input)
+        g.add_beam(beam)
+        g.beam_tick()
+        current_energized = g.count_energized()
+        if max_energized < current_energized:
+            max_energized = current_energized
+
+    return max_energized
