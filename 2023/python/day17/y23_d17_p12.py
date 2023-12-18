@@ -4,7 +4,7 @@ def next_location(i, j, dir):
     next_location = {0: (i, j+1), 1: (i+1, j), 2: (i, j-1), 3: (i-1, j)}
     return next_location[dir]
 
-def path(grid):
+def path(grid, min_seq, max_seq):
     g_rows = len(grid)
     g_cols = len(grid[0])
     q = [(0, 0, 0, 0, 0)]
@@ -15,12 +15,14 @@ def path(grid):
         for new_dir in [0, 1, 2, 3]:
             if new_dir == (dir + 2) % 4:
                 continue
+            if new_dir != dir and seq < min_seq:
+                continue
             i2, j2 = next_location(i, j, new_dir)
             if not (0 <= i2 < g_rows and 0 <= j2 < g_cols):
                 continue
             new_seq = 1
             if new_dir == dir:
-                if seq >= 3:
+                if seq >= max_seq:
                     continue
                 else:
                     new_seq = seq + 1
@@ -35,4 +37,8 @@ def path(grid):
 
 def part1(input):
     grid = [[int(c) for c in line] for line in input.rstrip().split('\n')]
-    return path(grid)
+    return path(grid, 0, 3)
+
+def part2(input):
+    grid = [[int(c) for c in line] for line in input.rstrip().split('\n')]
+    return path(grid, 4, 10)
