@@ -11,7 +11,7 @@ class Rng():
         self.s_gt = 0
         self.s_lt = 4001
 
-    def update_range_pass(self, category, lt_gt, new_val):
+    def update_passing_range(self, category, lt_gt, new_val):
         if lt_gt == '<':
             old_val = getattr(self, f'{category}_lt')
             setattr(self, f'{category}_lt', min(new_val, old_val))
@@ -19,7 +19,7 @@ class Rng():
             old_val = getattr(self, f'{category}_gt')
             setattr(self, f'{category}_gt', max(new_val, old_val))
 
-    def update_range_fail(self, category, lt_gt, new_val):
+    def update_failing_range(self, category, lt_gt, new_val):
         if lt_gt == '>': # less than x + 1
             old_val = getattr(self, f'{category}_lt')
             setattr(self, f'{category}_lt', min(old_val, new_val + 1))
@@ -39,16 +39,15 @@ def process_input(input: str):
 
     workflows = dict()
     for wf in workflows_part.split('\n'):
-        fw_name, rules_part = wf.split('{')
-        rules_split_str = rules_part[:-1].split(',')
-        rules = []
-        for rule in rules_split_str:
+        wf_name, rules_part = wf.split('{')
+        wf_rules = []
+        for rule in rules_part[:-1].split(','):
             if ':'in rule:
-                colon_i = rule.index(':')
-                rules.append((rule[0], rule[1], int(rule[2:colon_i]), rule[colon_i+1:]))
+                i = rule.index(':')
+                wf_rules.append((rule[0], rule[1], int(rule[2:i]), rule[i+1:]))
             else:
-                rules.append(rule)
-        workflows[fw_name] = rules
+                wf_rules.append(rule)
+        workflows[wf_name] = wf_rules
 
     return workflows
 
@@ -66,10 +65,10 @@ def traverse_paths(wfs: list, wf: str, rng: Rng):
                 category, lt_gt, value, wf_key = rule
                 new_rng = copy.deepcopy(rng)
                 # pass branch, go to new workflow
-                new_rng.update_range_pass(category, lt_gt, value)
+                new_rng.update_passing_range(category, lt_gt, value)
                 in_branch += traverse_paths(wfs, wf_key, new_rng)
                 # fail branch, continue in current wf
-                rng.update_range_fail(category, lt_gt, value)
+                rng.update_failing_range(category, lt_gt, value)
                 continue
             else:
                 # last rule of a workflow
