@@ -1,7 +1,7 @@
 from collections import deque
 
-HIGH = 2
-LOW = 1
+HIGH = 42
+LOW = 13
 
 class SignalCounter():
     def __init__(self, low=0, high=0):
@@ -29,13 +29,10 @@ class Mod():
         return f'[{self.type}{self.name}->{self.links}]'
 
     def is_conj_high(self):
-        # assert len(self.received) > 0, 'signal should have been received'
         return all(sig == HIGH for sig in self.received.values())
     
     def flip(self):
-        # assert self.type == '%', 'only flip-flops should flip'
         self.on = not self.on
-
 
 def process_input(input: str):
     mods = dict()
@@ -87,29 +84,19 @@ def process_signals(mods: dict[str, Mod], sc: SignalCounter):
         elif mod.type == 'broadcaster':
             for next_mod_key in mod.links:
                 q.append((signal, next_mod_key, mod_key))
-        # else:
-        #     assert False, 'error here'
 
-def nullify(mods: dict[str, Mod]):
-    for key in mods.keys():
-        mod = mods[key]
-        if mod.type == '%':
-            mod.on = False
-        elif mod.type == '&':
-            for received_key in mod.received.keys():
-                mod.received[received_key] = LOW
+def set_up_watched_modules(mods: dict[str, Mod]):
+    for key, mod in mods.items():
+        for link in mod.links:
+            if link in mods.keys():
+                if mods[link].type == '&':
+                    mods[link].received[key] = False
 
 
 def part1(input):
     mods = process_input(input)
-
-    # populate watched mods
+    set_up_watched_modules(mods)
     sc = SignalCounter(0, 0)
-    for push_button in range(50000):
-        process_signals(mods, sc)
-    nullify(mods)
-
-    sc = SignalCounter(0, 0)
-    for push_button in range(1000):
+    for _ in range(1000):
         process_signals(mods, sc)
     return sc.pulse_product()
