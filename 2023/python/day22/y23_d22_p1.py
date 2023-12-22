@@ -1,3 +1,6 @@
+from copy import deepcopy
+
+
 class Brick():
     def __init__(self, x1, y1, z1, x2, y2, z2):
         self.x1 = x1
@@ -6,6 +9,7 @@ class Brick():
         self.x2 = x2
         self.y2 = y2
         self.z2 = z2
+        self.moved = False
 
     def __str__(self) -> str:
         return f'{self.x1},{self.y1},{self.z1}~{self.x2},{self.y2},{self.z2}'
@@ -45,7 +49,7 @@ class Tower():
             total += floor_string + '\n'
         return total
 
-    def fill_brick_volume(self, b: Brick, fill: Brick | str):
+    def fill_brick_volume(self, b: Brick, fill: Brick | None):
         for x in range(b.x2 - b.x1 + 1):
             self.grid[b.x1 + x][b.y1][b.z1] = fill
         for y in range(b.y2 - b.y1 + 1):
@@ -77,6 +81,7 @@ class Tower():
             self.fill_brick_volume(b, None)
             b.z1 -= steps
             b.z2 -= steps
+            b.moved = True
             self.fill_brick_volume(b, b)
             return True
         return False
@@ -88,6 +93,12 @@ class Tower():
                 bricks_move += 1
         return bricks_move
             
+    def sort_by_bottoms(self):
+        self.bricks.sort(key=lambda b: b.z1)
+
+    def reset_move_trackers(self):
+        for b in self.bricks:
+            b.moved = False
 
     def get_bricks_above(self, b: Brick):
         bricks_above = []
@@ -120,6 +131,10 @@ class Tower():
             if len(self.get_bricks_below(br)) == 1:
                 return False
         return True
+    
+    def disintegrate(self, b: Brick):
+        self.fill_brick_volume(b, None)
+        self.bricks.remove(b)
 
 
 def process_input(input: str) -> (list[Brick], Tower):
@@ -146,3 +161,22 @@ def part1(input):
     while bricks_move:
         bricks_move = tower.move_bricks_down()
     return [tower.can_be_disintegrated(b) for b in tower.bricks].count(True)
+
+def part2(input):
+    bricks: list
+    tower: Tower
+    bricks, tower = process_input(input)
+    tower.bricks = bricks
+    tower.fill_tower_with_bricks()
+    tower.sort_by_bottoms()
+    tower.move_bricks_down()
+    tower.reset_move_trackers()
+
+    total_moved = 0
+    for b in tower.bricks:
+        new_tower = deepcopy(tower)
+        new_tower.disintegrate(b)
+        moved = new_tower.move_bricks_down()
+        total_moved += moved
+
+    return total_moved
