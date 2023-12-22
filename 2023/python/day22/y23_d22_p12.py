@@ -148,25 +148,21 @@ def process_input(input: str) -> (list[Brick], Tower):
     z_max = max(b.z2 for b in bricks) + 1
     tower = Tower(x_max, y_max, z_max)
 
-    return bricks, tower
+    tower.bricks = bricks
+    return tower
 
 
 def part1(input):
-    bricks: list
     tower: Tower
-    bricks, tower = process_input(input)
-    tower.bricks = bricks
+    tower = process_input(input)
     tower.fill_tower_with_bricks()
-    bricks_move = 1
-    while bricks_move:
-        bricks_move = tower.move_bricks_down()
+    tower.sort_by_bottoms()
+    tower.move_bricks_down()
     return [tower.can_be_disintegrated(b) for b in tower.bricks].count(True)
 
 def part2(input):
-    bricks: list
     tower: Tower
-    bricks, tower = process_input(input)
-    tower.bricks = bricks
+    tower = process_input(input)
     tower.fill_tower_with_bricks()
     tower.sort_by_bottoms()
     tower.move_bricks_down()
