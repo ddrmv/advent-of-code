@@ -14,15 +14,11 @@ def is_report_safe(report):
 
         # rest of report
         for index in range(1, len(report)):
-            if (increasing and report[index - 1] >= report[index]):
-                safe = False
-                break
-        
-            if (not increasing and report[index - 1] <= report[index]):
-                safe = False
-                break
-        
-            if abs(report[index] - report[index - 1]) > 3:
+            if (
+                increasing and report[index - 1] >= report[index]
+                or not increasing and report[index - 1] <= report[index]
+                or abs(report[index] - report[index - 1]) > 3
+                ):
                 safe = False
                 break
         
