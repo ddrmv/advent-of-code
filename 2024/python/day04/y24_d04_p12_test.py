@@ -1,6 +1,6 @@
 import pytest
 from mylib.helper import read_input
-from y24_d04_p1 import part1, part2
+from y24_d04_p12 import part1, part2
 
 @pytest.fixture
 def example_input():
